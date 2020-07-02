@@ -1,7 +1,5 @@
 import numpy as np
-#import pandas_datareader.data as web
 import datetime
-import csv
 from matplotlib import pyplot as plt 
 import fredpy as fp
 
@@ -41,7 +39,7 @@ def FredList(ticker, win, freq):
 
 
 #Janela de tempo desejada. Formato AAAA-MM-DD.
-win = ['1990-01-01', '2015-01-01']
+win = ['1960-01-01', '2019-01-01']
 
 ## Obtem dados de desemprego, inflação. Os parâmetros são ticker(encontrado no site do FRED),
 ## janela de tempo e frequência abreviada('A', 'M', 'W', 'D')
@@ -61,7 +59,7 @@ regression_formula = linear_regression(u, var_inflacao)
 m_equation = round(regression_formula[0], 4)
 c_equation = round(regression_formula[1], 4)
 
-print_formula = 'y =' + str(m_equation) + 'x + ' + str(c_equation)
+print_formula = 'y = ' + str(m_equation) + 'x + ' + str(c_equation)
 print(print_formula)
 
 # Cria a linha da regressão linear para o gráfico
@@ -69,9 +67,14 @@ x = np.linspace(4, 10, 100)
 y = m_equation * x + c_equation
 
 # Plota gráfico e regressão
+plt.xkcd()
 plt.scatter(u, var_inflacao)
-plt.plot(x, y, label= print_formula)
+plt.xlabel('Desemprego')
+plt.ylabel('Variação da Inflação')
+plt.title('Curva de Phillips Aceleracionista')
+plt.plot(x, y, color= 'k', linestyle= '--', label= print_formula)
 plt.legend(loc='upper left')
+
 plt.show()
 
 
