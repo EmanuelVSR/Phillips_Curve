@@ -22,19 +22,17 @@ def linear_regression(x, y):
 	m_equation = numer / denom
 	c_equation = y_mean - (m_equation * x_mean)
 
-	return m_equation, c_equation
+	return round(m_equation, 4), round(c_equation, 4)
 
 ## Formula usada para retirar e manipular dados históricos diretos do FRED
 def FredList(ticker, win, freq):
 	
 	i = fp.series(ticker)
-	
 	if i.frequency_short != freq:
 		i = i.as_frequency(freq,'mean')
-
+	
 	i2 = i.window(win)
 	i_list = i2.data.tolist()
-
 	return i_list
 
 
@@ -46,6 +44,7 @@ win = ['1960-01-01', '2019-01-01']
 u = FredList('UNRATE', win, 'A')
 p = FredList('FPCPITOTLZGUSA', win, 'A')
 
+
 ## O modelo de curva de Phillips aceleracionista usa a variação da inflação
 var_inflacao =[]
 for i, x in enumerate(p):
@@ -56,10 +55,10 @@ for i, x in enumerate(p):
 
 # Retorna m e c da equação linear
 regression_formula = linear_regression(u, var_inflacao)
-m_equation = round(regression_formula[0], 4)
-c_equation = round(regression_formula[1], 4)
+m_equation = regression_formula[0]
+c_equation = regression_formula[1]
 
-print_formula = 'y = ' + str(m_equation) + 'x + ' + str(c_equation)
+print_formula = 'y = {0}x + {1}'.format(m_equation,c_equation)
 print(print_formula)
 
 # Cria a linha da regressão linear para o gráfico
